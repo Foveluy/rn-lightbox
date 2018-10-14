@@ -72,7 +72,7 @@ export default class Lightbox extends Component {
 
       this.setState(
         {
-          isOpen: this.props.navigator ? true : false,
+          isOpen: false,
           isAnimating: true,
           origin: {
             width,
@@ -83,19 +83,9 @@ export default class Lightbox extends Component {
         },
         () => {
           this.props.didOpen();
-          if (this.props.navigator) {
-            const route = {
-              component: LightboxOverlay,
-              passProps: this.getOverlayProps()
-            };
-            const routes = this.props.navigator.getCurrentRoutes();
-            routes.push(route);
-            this.props.navigator.immediatelyResetRouteStack(routes);
-          } else {
-            this.setState({
-              isOpen: true
-            });
-          }
+          this.setState({
+            isOpen: true
+          });
           setTimeout(() => {
             this._root && this.state.layoutOpacity.setValue(0);
           });
