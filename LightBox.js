@@ -2,7 +2,7 @@ import React, { Component, Children, cloneElement } from "react";
 import PropTypes from "prop-types";
 import { Animated, TouchableHighlight, View } from "react-native";
 
-import LightboxOverlay from "./LightboxOverlay";
+import LightboxOverlay from "./LightBoxOverlay";
 
 export default class Lightbox extends Component {
   static propTypes = {
@@ -123,7 +123,10 @@ export default class Lightbox extends Component {
         style={this.props.style}
         onLayout={() => {}}
       >
-        <Animated.View style={{ opacity: this.state.layoutOpacity }}>
+        <Animated.View
+          useNativeDriver
+          style={{ opacity: this.state.layoutOpacity }}
+        >
           <TouchableHighlight
             underlayColor={this.props.underlayColor}
             onPress={this.open}

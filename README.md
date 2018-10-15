@@ -16,4 +16,8 @@ const LightboxView ({ navigator }) => (
 
 ## Demo 
 
+<<<<<<< HEAD
 ![](https://cloud.githubusercontent.com/assets/378279/9074360/16eac5d6-3b09-11e5-90af-a69980e9f4be.gif)
+=======
+![](https://cloud.githubusercontent.com/assets/378279/9074360/16eac5d6-3b09-11e5-90af-a69980e9f4be.gif)
+>>>>>>> e2e703280785b9a2b2039223bc804c0192f4b796
