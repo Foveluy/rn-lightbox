@@ -1,24 +1,11 @@
 import React from "react";
 import { StyleSheet, Image, Dimensions, View } from "react-native";
 import Lightbox from "./LightBox";
-import PinchZoomView from "react-native-pinch-zoom-view";
-
-const WIDTH = Dimensions.get("window").width;
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <PinchZoomView>
-          <Image
-            style={{ height: 300, width: 300 }}
-            source={{
-              uri:
-                "http://knittingisawesome.com/wp-content/uploads/2012/12/cat-wearing-a-reindeer-hat1.jpg"
-            }}
-          />
-        </PinchZoomView>
-
         <Lightbox
           activeProps={{
             width: null,
