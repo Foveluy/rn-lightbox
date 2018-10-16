@@ -83,19 +83,24 @@ export default class LightboxOverlay extends Component {
     backgroundColor: "black"
   };
 
-  state = {
-    isAnimating: false,
-    isPanning: false,
-    target: {
-      x: 0,
-      y: 0,
-      opacity: 1
-    },
-    scale: new Animated.Value(1),
-    pan: new Animated.Value(0),
-    openVal: new Animated.Value(0),
-    left: new Animated.Value(0)
-  };
+  constructor(props) {
+    super(props);
+
+    this.isOnePin = false;
+    this.state = {
+      isAnimating: false,
+      isPanning: false,
+      target: {
+        x: 0,
+        y: 0,
+        opacity: 1
+      },
+      scale: new Animated.Value(1),
+      pan: new Animated.Value(0),
+      openVal: new Animated.Value(0),
+      left: new Animated.Value(0)
+    };
+  }
 
   componentWillMount() {
     this._panResponder = PanResponder.create({
@@ -121,12 +126,19 @@ export default class LightboxOverlay extends Component {
         this.state.scale.setValue(
           1 - Math.abs(gestureState.dy / (WINDOW_WIDTH * 2))
         );
-
-        // Animated.event([null, { dy: this.state.pan, dx: this.state.left }]);
+        console.log(gestureState.dy);
+        if (gestureState.dx !== 0 || gestureState.dy !== 0) {
+          this.isOnePin = false;
+        } else {
+          this.isOnePin = true;
+        }
       },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
       onPanResponderRelease: (evt, gestureState) => {
-        if (Math.abs(gestureState.dy) > DRAG_DISMISS_THRESHOLD) {
+        if (
+          Math.abs(gestureState.dy) > DRAG_DISMISS_THRESHOLD ||
+          this.isOnePin === true
+        ) {
           this.setState({
             isPanning: false,
             target: {
@@ -136,6 +148,7 @@ export default class LightboxOverlay extends Component {
             }
           });
           this.close();
+          this.isMoved = false;
         } else {
           Animated.stagger(0, [
             Animated.spring(this.state.pan, {
