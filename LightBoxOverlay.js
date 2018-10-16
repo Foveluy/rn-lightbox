@@ -91,8 +91,10 @@ export default class LightboxOverlay extends Component {
       y: 0,
       opacity: 1
     },
+    scale: new Animated.Value(1),
     pan: new Animated.Value(0),
-    openVal: new Animated.Value(0)
+    openVal: new Animated.Value(0),
+    left: new Animated.Value(0)
   };
 
   componentWillMount() {
@@ -109,9 +111,19 @@ export default class LightboxOverlay extends Component {
 
       onPanResponderGrant: (evt, gestureState) => {
         this.state.pan.setValue(0);
+        this.state.left.setValue(0);
+        this.state.scale.setValue(1);
         this.setState({ isPanning: true });
       },
-      onPanResponderMove: Animated.event([null, { dy: this.state.pan }]),
+      onPanResponderMove: (evt, gestureState) => {
+        this.state.pan.setValue(gestureState.dy);
+        this.state.left.setValue(gestureState.dx);
+        this.state.scale.setValue(
+          1 - Math.abs(gestureState.dy / (WINDOW_WIDTH * 2))
+        );
+
+        // Animated.event([null, { dy: this.state.pan, dx: this.state.left }]);
+      },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
       onPanResponderRelease: (evt, gestureState) => {
         if (Math.abs(gestureState.dy) > DRAG_DISMISS_THRESHOLD) {
@@ -125,12 +137,20 @@ export default class LightboxOverlay extends Component {
           });
           this.close();
         } else {
-          Animated.spring(this.state.pan, {
-            toValue: 0,
-            ...this.props.springConfig
-          }).start(() => {
-            this.setState({ isPanning: false });
-          });
+          Animated.stagger(0, [
+            Animated.spring(this.state.pan, {
+              toValue: 0,
+              ...this.props.springConfig
+            }),
+            Animated.spring(this.state.left, {
+              toValue: 0,
+              ...this.props.springConfig
+            }),
+            Animated.spring(this.state.scale, {
+              toValue: 1,
+              ...this.props.springConfig
+            })
+          ]).start(() => this.setState({ isPanning: false }));
         }
       }
     });
@@ -173,10 +193,17 @@ export default class LightboxOverlay extends Component {
     this.setState({
       isAnimating: true
     });
-    Animated.spring(this.state.openVal, {
-      toValue: 0,
-      ...this.props.springConfig
-    }).start(() => {
+
+    Animated.stagger(0, [
+      Animated.spring(this.state.openVal, {
+        toValue: 0,
+        ...this.props.springConfig
+      }),
+      Animated.spring(this.state.scale, {
+        toValue: 1,
+        ...this.props.springConfig
+      })
+    ]).start(() => {
       this.setState({
         isAnimating: false
       });
@@ -216,12 +243,18 @@ export default class LightboxOverlay extends Component {
     let dragStyle;
     if (isPanning) {
       dragStyle = {
-        top: this.state.pan
+        top: this.state.pan,
+        left: this.state.left,
+        transform: [{ scale: this.state.scale }]
       };
       lightboxOpacityStyle.opacity = this.state.pan.interpolate({
         inputRange: [-WINDOW_HEIGHT, 0, WINDOW_HEIGHT],
         outputRange: [0, 1, 0]
       });
+    } else {
+      dragStyle = {
+        transform: [{ scale: this.state.scale }]
+      };
     }
 
     const openStyle = [

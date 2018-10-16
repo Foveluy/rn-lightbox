@@ -15,8 +15,8 @@ export default class App extends React.Component {
           springConfig={{
             // friction: 7,//Controls "bounciness"/overshoot. Default 7.
             // tension: 10, //Controls speed. Default 40.
-            speed: 12, //Controls speed of the animation.Default 12.
-            bounciness: 0.1 //Controls bounciness. Default 8.
+            speed: 16, //Controls speed of the animation.Default 12.
+            bounciness: 4 //Controls bounciness. Default 8.
           }}
         >
           <Image
