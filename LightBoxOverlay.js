@@ -126,7 +126,7 @@ export default class LightboxOverlay extends Component {
         this.state.scale.setValue(
           1 - Math.abs(gestureState.dy / (WINDOW_WIDTH * 2))
         );
-        console.log(gestureState.dy);
+
         if (gestureState.dx !== 0 || gestureState.dy !== 0) {
           this.isOnePin = false;
         } else {
