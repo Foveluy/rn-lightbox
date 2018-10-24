@@ -1,6 +1,6 @@
 import React, { Component, Children, cloneElement } from "react";
 import PropTypes from "prop-types";
-import { Animated, TouchableHighlight, View } from "react-native";
+import { Animated, TouchableOpacity, View } from "react-native";
 
 import LightboxOverlay from "./LightBoxOverlay";
 
@@ -127,12 +127,12 @@ export default class Lightbox extends Component {
           useNativeDriver
           style={{ opacity: this.state.layoutOpacity }}
         >
-          <TouchableHighlight
+          <TouchableOpacity
             underlayColor={this.props.underlayColor}
             onPress={this.open}
           >
             {this.props.children}
-          </TouchableHighlight>
+          </TouchableOpacity>
         </Animated.View>
         {this.props.navigator ? (
           false
