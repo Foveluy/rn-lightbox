@@ -1,6 +1,6 @@
 import React, { Component, Children, cloneElement } from "react";
 import PropTypes from "prop-types";
-import { Animated, TouchableOpacity, View } from "react-native";
+import { Animated, TouchableHighlight, View } from "react-native";
 
 import LightboxOverlay from "./LightBoxOverlay";
 
@@ -19,7 +19,8 @@ export default class Lightbox extends Component {
       tension: PropTypes.number,
       friction: PropTypes.number
     }),
-    swipeToDismiss: PropTypes.bool
+    swipeToDismiss: PropTypes.bool,
+    originStyle: PropTypes.object
   };
 
   static defaultProps = {
@@ -45,6 +46,7 @@ export default class Lightbox extends Component {
     if (this.props.renderContent) {
       return this.props.renderContent();
     } else if (this.props.activeProps) {
+      // console.log( this.props.activeProps)
       return cloneElement(
         Children.only(this.props.children),
         this.props.activeProps
@@ -63,7 +65,8 @@ export default class Lightbox extends Component {
     children: this.getContent(),
     didOpen: this.props.didOpen,
     willClose: this.props.willClose,
-    onClose: this.onClose
+    onClose: this.onClose,
+    originStyle: this.props.originStyle
   });
 
   open = () => {
@@ -127,12 +130,12 @@ export default class Lightbox extends Component {
           useNativeDriver
           style={{ opacity: this.state.layoutOpacity }}
         >
-          <TouchableOpacity
+          <TouchableHighlight
             underlayColor={this.props.underlayColor}
             onPress={this.open}
           >
             {this.props.children}
-          </TouchableOpacity>
+          </TouchableHighlight>
         </Animated.View>
         {this.props.navigator ? (
           false

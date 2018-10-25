@@ -90,6 +90,7 @@ export default class LightboxOverlay extends Component {
     this.state = {
       isAnimating: false,
       isPanning: false,
+      isClosing: false,
       target: {
         x: 0,
         y: 0,
@@ -204,7 +205,8 @@ export default class LightboxOverlay extends Component {
       StatusBar.setHidden(false, "fade");
     }
     this.setState({
-      isAnimating: true
+      isAnimating: true,
+      isClosing: true
     });
 
     Animated.stagger(0, [
@@ -218,7 +220,8 @@ export default class LightboxOverlay extends Component {
       })
     ]).start(() => {
       this.setState({
-        isAnimating: false
+        isAnimating: false,
+        isClosing: false
       });
       this.props.onClose();
     });
@@ -236,7 +239,8 @@ export default class LightboxOverlay extends Component {
       renderHeader,
       swipeToDismiss,
       origin,
-      backgroundColor
+      backgroundColor,
+      originStyle
     } = this.props;
 
     const { isPanning, isAnimating, openVal, target } = this.state;
@@ -315,9 +319,18 @@ export default class LightboxOverlay extends Component {
         )}
       </Animated.View>
     );
+
+    const Chilren = this.state.isClosing
+      ? this.props.originStyle
+        ? React.cloneElement(this.props.children, {
+            style: originStyle
+          })
+        : this.props.children
+      : this.props.children;
+
     const content = (
       <Animated.View style={[openStyle, dragStyle]} {...handlers}>
-        {this.props.children}
+        {Chilren}
       </Animated.View>
     );
 
