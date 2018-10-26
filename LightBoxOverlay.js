@@ -106,8 +106,9 @@ export default class LightboxOverlay extends Component {
   componentWillMount() {
     this._panResponder = PanResponder.create({
       // Ask to be the responder:
-      onStartShouldSetPanResponder: (evt, gestureState) =>
-        !this.state.isAnimating,
+      onStartShouldSetPanResponder: (evt, gestureState) => {
+        return !this.state.isAnimating;
+      },
       onStartShouldSetPanResponderCapture: (evt, gestureState) =>
         !this.state.isAnimating,
       onMoveShouldSetPanResponder: (evt, gestureState) =>
@@ -347,7 +348,7 @@ export default class LightboxOverlay extends Component {
     return (
       <Modal
         visible={isOpen}
-        transparent={true}
+        transparent={Platform.select({ ios: true, android: false })}
         onRequestClose={() => this.close()}
       >
         {background}

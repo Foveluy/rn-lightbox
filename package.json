@@ -1,7 +1,8 @@
 {
   "name": "rn-lightbox",
   "version": "0.9.0",
-  "main": "LightBox.js",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -9,10 +10,8 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "expo": "^30.0.1",
-    "react": "16.3.1"
-  },
-  "devDependencies": {
-    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz"
+    "react": "16.3.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "expo": "^30.0.1"
   }
 }
