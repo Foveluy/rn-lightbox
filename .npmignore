@@ -2,3 +2,7 @@ assets
 node_modules
 App.js
 .expo
+README.md
+app.json
+.babelrc
+.watchmanconfig

@@ -1,6 +1,6 @@
 import React, { Component, Children, cloneElement } from "react";
 import PropTypes from "prop-types";
-import { Animated, TouchableHighlight, View } from "react-native";
+import { Animated, TouchableOpacity, View } from "react-native";
 
 import LightboxOverlay from "./LightBoxOverlay";
 
@@ -20,7 +20,8 @@ export default class Lightbox extends Component {
       friction: PropTypes.number
     }),
     swipeToDismiss: PropTypes.bool,
-    originStyle: PropTypes.object
+    originStyle: PropTypes.object,
+    disable: PropTypes.bool
   };
 
   static defaultProps = {
@@ -124,18 +125,18 @@ export default class Lightbox extends Component {
       <View
         ref={component => (this._root = component)}
         style={this.props.style}
-        onLayout={() => {}}
       >
         <Animated.View
           useNativeDriver
           style={{ opacity: this.state.layoutOpacity }}
         >
-          <TouchableHighlight
+          <TouchableOpacity
+            disabled={this.props.disable}
             underlayColor={this.props.underlayColor}
             onPress={this.open}
           >
             {this.props.children}
-          </TouchableHighlight>
+          </TouchableOpacity>
         </Animated.View>
         {this.props.navigator ? (
           false
