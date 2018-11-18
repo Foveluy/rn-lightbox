@@ -112,7 +112,8 @@ export default class LightboxOverlay extends Component {
       onStartShouldSetPanResponderCapture: (evt, gestureState) =>
         !this.state.isAnimating,
       onMoveShouldSetPanResponder: (evt, gestureState) =>
-        !this.state.isAnimating,
+        //事件不可穿透
+        false,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) =>
         !this.state.isAnimating,
 
@@ -135,7 +136,8 @@ export default class LightboxOverlay extends Component {
           this.isOnePin = true;
         }
       },
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
+      // 如果想要缩放，可以使用这里 = true
+      onPanResponderTerminationRequest: (evt, gestureState) => false,
       onPanResponderRelease: (evt, gestureState) => {
         if (
           Math.abs(gestureState.dy) > DRAG_DISMISS_THRESHOLD ||
@@ -180,6 +182,9 @@ export default class LightboxOverlay extends Component {
   open = () => {
     if (isIOS) {
       StatusBar.setHidden(true, "fade");
+    } else {
+      StatusBar.setBackgroundColor("black", true);
+      StatusBar.setBarStyle("dark-content", true);
     }
     this.state.pan.setValue(0);
     this.setState({
@@ -204,6 +209,9 @@ export default class LightboxOverlay extends Component {
     this.props.willClose();
     if (isIOS) {
       StatusBar.setHidden(false, "fade");
+    } else {
+      StatusBar.setBackgroundColor("white", true);
+      StatusBar.setBarStyle("dark-content", true);
     }
     this.setState({
       isAnimating: true,
@@ -348,7 +356,7 @@ export default class LightboxOverlay extends Component {
     return (
       <Modal
         visible={isOpen}
-        transparent={Platform.select({ ios: true, android: false })}
+        transparent={Platform.select({ ios: true, android: true })}
         onRequestClose={() => this.close()}
       >
         {background}

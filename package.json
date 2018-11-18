@@ -1,6 +1,6 @@
 {
   "name": "rn-lightbox",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "main": "LightBox.js",
   "scripts": {
     "start": "expo start",
@@ -10,9 +10,5 @@
   },
   "dependencies": {
     "react": "16.3.1"
-  },
-  "devDependencies": {
-    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
-    "expo": "^30.0.1"
   }
 }
