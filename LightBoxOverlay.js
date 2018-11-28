@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
+import Zoomable from "./zoomable.ios";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 const WINDOW_WIDTH = Dimensions.get("window").width;
@@ -137,7 +138,7 @@ export default class LightboxOverlay extends Component {
         }
       },
       // 如果想要缩放，可以使用这里 = true
-      onPanResponderTerminationRequest: (evt, gestureState) => false,
+      onPanResponderTerminationRequest: (evt, gestureState) => true,
       onPanResponderRelease: (evt, gestureState) => {
         if (
           Math.abs(gestureState.dy) > DRAG_DISMISS_THRESHOLD ||
@@ -337,10 +338,16 @@ export default class LightboxOverlay extends Component {
         : this.props.children
       : this.props.children;
 
-    const content = (
+    const content = this.state.isClosing ? (
       <Animated.View style={[openStyle, dragStyle]} {...handlers}>
         {Chilren}
       </Animated.View>
+    ) : (
+      <Zoomable ref={node => (this.Zoomable = node)}>
+        <Animated.View style={[openStyle, dragStyle]} {...handlers}>
+          {Chilren}
+        </Animated.View>
+      </Zoomable>
     );
 
     if (this.props.navigator) {
